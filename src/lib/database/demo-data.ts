@@ -16,8 +16,8 @@ import {
 // loadDemoData  –  Idempotent: skips if data is already loaded
 // ---------------------------------------------------------------------------
 
-export function loadDemoData(): void {
-  if (hasData()) return;
+export function loadDemoData(force = false): void {
+  if (hasData() && !force) return;
 
   // Reset to be safe
   clearAll();

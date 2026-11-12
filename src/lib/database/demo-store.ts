@@ -69,7 +69,12 @@ export function clearAll(): void {
 // ============================================================================
 
 export function getAllStudents(): Student[] {
-  return students;
+  const seen = new Set<string>();
+  return students.filter((s) => {
+    if (seen.has(s.id)) return false;
+    seen.add(s.id);
+    return true;
+  });
 }
 
 export function getStudentById(id: string): Student | undefined {
@@ -82,6 +87,14 @@ export function getStudentByEnrollmentNumber(enrollmentNumber: string): Student 
 
 export function createStudent(data: Omit<Student, 'id' | 'created_at' | 'updated_at'> & { id?: string }): Student {
   const timestamp = now();
+  const existing = students.find(
+    (s) => (data.id && s.id === data.id) || s.enrollment_number === data.enrollment_number
+  );
+  if (existing) {
+    Object.assign(existing, data, { updated_at: timestamp });
+    return existing;
+  }
+
   const student: Student = {
     id: data.id ?? randomUUID(),
     enrollment_number: data.enrollment_number,
@@ -135,7 +148,12 @@ export function searchStudents(filters: {
 // ============================================================================
 
 export function getAllExams(): Exam[] {
-  return exams;
+  const seen = new Set<string>();
+  return exams.filter((e) => {
+    if (seen.has(e.id)) return false;
+    seen.add(e.id);
+    return true;
+  });
 }
 
 export function getExamById(id: string): Exam | undefined {
@@ -148,6 +166,14 @@ export function getExamByCode(code: string): Exam | undefined {
 
 export function createExam(data: Omit<Exam, 'id' | 'created_at' | 'updated_at'> & { id?: string }): Exam {
   const timestamp = now();
+  const existing = exams.find(
+    (e) => (data.id && e.id === data.id) || e.exam_code === data.exam_code
+  );
+  if (existing) {
+    Object.assign(existing, data, { updated_at: timestamp });
+    return existing;
+  }
+
   const exam: Exam = {
     id: data.id ?? randomUUID(),
     exam_code: data.exam_code,
@@ -199,7 +225,13 @@ export function searchExams(filters: {
 // ============================================================================
 
 export function getAllEnrollments(): Enrollment[] {
-  return enrollments;
+  const seen = new Set<string>();
+  return enrollments.filter((e) => {
+    const key = `${e.student_id}_${e.exam_id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 export function createEnrollment(
@@ -215,9 +247,9 @@ export function createEnrollment(
 
   // Validate no duplicate enrollment
   const duplicate = enrollments.find(
-    (e) => e.student_id === data.student_id && e.exam_id === data.exam_id,
+    (e) => (data.id && e.id === data.id) || (e.student_id === data.student_id && e.exam_id === data.exam_id),
   );
-  if (duplicate) throw new Error(`Enrollment already exists for student "${data.student_id}" in exam "${data.exam_id}"`);
+  if (duplicate) return duplicate;
 
   const enrollment: Enrollment = {
     id: data.id ?? randomUUID(),
@@ -262,7 +294,12 @@ export function getEnrollmentsWithDetails(): Enrollment[] {
 // ============================================================================
 
 export function getAllRooms(): Room[] {
-  return rooms;
+  const seen = new Set<string>();
+  return rooms.filter((r) => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  });
 }
 
 export function getRoomById(id: string): Room | undefined {
@@ -271,6 +308,14 @@ export function getRoomById(id: string): Room | undefined {
 
 export function createRoom(data: Omit<Room, 'id' | 'created_at' | 'updated_at'> & { id?: string }): Room {
   const timestamp = now();
+  const existing = rooms.find(
+    (r) => (data.id && r.id === data.id) || r.room_name === data.room_name
+  );
+  if (existing) {
+    Object.assign(existing, data, { updated_at: timestamp });
+    return existing;
+  }
+
   const room: Room = {
     id: data.id ?? randomUUID(),
     room_name: data.room_name,
