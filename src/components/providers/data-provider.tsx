@@ -7,6 +7,7 @@ import {
   AlgorithmComparison, ConflictGraph, GraphStats, SeatingResult,
   CSVImportResult, StudentFormData, ExamFormData, RoomFormData
 } from "@/types";
+import { generateId } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 interface DataContextType {
@@ -488,7 +489,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       });
 
       const assignments = Object.entries(result.coloring).map(([examId, slot]) => ({
-        id: crypto.randomUUID(),
+        id: generateId(),
         timetable_id: timetable.id,
         exam_id: examId,
         time_slot: slot,
@@ -534,7 +535,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         for (const room of slot.rooms) {
           for (const alloc of room.allocations) {
             allAllocations.push({
-              id: alloc.id || crypto.randomUUID(),
+              id: alloc.id || generateId(),
               timetable_id: alloc.timetable_id,
               time_slot: alloc.time_slot,
               exam_id: alloc.exam_id,
@@ -605,7 +606,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       });
 
       const assignments = Object.entries(recommended.coloring).map(([examId, slot]) => ({
-        id: crypto.randomUUID(),
+        id: generateId(),
         timetable_id: timetable.id,
         exam_id: examId,
         time_slot: slot,
@@ -630,7 +631,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
           for (const room of slot.rooms) {
             for (const alloc of room.allocations) {
               allAllocations.push({
-                id: alloc.id || crypto.randomUUID(),
+                id: alloc.id || generateId(),
                 timetable_id: alloc.timetable_id,
                 time_slot: alloc.time_slot,
                 exam_id: alloc.exam_id,

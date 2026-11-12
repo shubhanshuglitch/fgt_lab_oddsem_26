@@ -13,7 +13,7 @@ import {
   SeatingAllocation,
   AlgorithmRun,
 } from '@/types';
-import { randomUUID } from 'crypto';
+import { v4 as randomUUID } from 'uuid';
 
 // ---------------------------------------------------------------------------
 // Module-level storage (singleton – persists across requests in dev server)

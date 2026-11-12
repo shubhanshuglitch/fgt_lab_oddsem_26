@@ -171,3 +171,4 @@ CREATE POLICY "Allow anon delete all" ON seating_allocations FOR DELETE USING (t
 
 CREATE POLICY "Allow anon read all" ON algorithm_runs FOR SELECT USING (true);
 CREATE POLICY "Allow anon insert all" ON algorithm_runs FOR INSERT WITH CHECK (true);
+

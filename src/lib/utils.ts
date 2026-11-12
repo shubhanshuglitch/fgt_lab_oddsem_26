@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { v4 as uuidv4 } from "uuid";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -19,7 +20,7 @@ export function formatDateTime(date: Date | string): string {
 }
 
 export function generateId(): string {
-  return crypto.randomUUID();
+  return uuidv4();
 }
 
 export function slugify(text: string): string {

@@ -81,3 +81,4 @@ export const enrollmentSchema = z.object({
   student_id: z.string().uuid("Invalid student ID").or(z.string().min(1, "Student is required")),
   exam_id: z.string().uuid("Invalid exam ID").or(z.string().min(1, "Exam is required")),
 });
+
